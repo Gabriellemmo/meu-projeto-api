@@ -1,0 +1,71 @@
+using PrimeiraApi.Data;
+using PrimeiraApi.Dtos;
+using PrimeiraApi.Models;
+using PrimeiraApi.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using static BCrypt.Net.BCrypt;
+
+namespace PrimeiraApi.Controllers;
+
+[Authorize]
+[ApiController]
+[Route("api/[controller]")]
+public class UsuariosController : ControllerBase {
+    private readonly AppDbContext _context;
+
+    public UsuariosController(AppDbContext context) {
+        _context = context;
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync(UsuarioCreateDto dto) {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (dto.Senha != dto.ConfirmarSenha)
+            return BadRequest(new { message = "As senhas não conferem." });
+
+        var existe = await _context.Usuarios
+            .AnyAsync(u => u.Login == dto.Login);
+
+        if (existe)
+            return BadRequest(new { message = "Este login já está em uso." });
+
+        string senhaHash = HashPassword(dto.Senha);
+
+        var usuario = new Usuario {
+            Nome = dto.Nome,
+            Login = dto.Login,
+            SenhaHash = senhaHash 
+        };
+
+        _context.Usuarios.Add(usuario);
+        await _context.SaveChangesAsync();
+        
+        return CreatedAtRoute("GetById",
+            new { id = usuario.Id },
+            new UsuarioDto {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Login = usuario.Login
+            }
+        );
+    }
+
+    [HttpGet("{id:int}", Name = "GetById")]
+    public async Task<IActionResult> GetByIdAsync(int id) {
+        var usuario = await _context.Usuarios.FindAsync(id);
+
+        if (usuario == null)
+            return NotFound();
+
+        return Ok(new UsuarioDto {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Login = usuario.Login
+            });
+    }
+}
