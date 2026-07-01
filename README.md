@@ -1,19 +1,52 @@
-# CLONAR PROJETO
-git clone https://github.com/Gabriellemmo/meu-projeto-api.git
-cd meu-projeto-api
+# 📚 Projeto API + Front-end
 
-# BACKEND (.NET)
-cd meu-projetobackend/dotnet-main
+## Clonar o Back-end
+
+```bash
+git clone https://github.com/SEU_USUARIO/backend.git
+cd backend
 dotnet restore
-dotnet ef database update
 dotnet run
+```
 
-# FRONTEND (React)
-cd meu-projetofrontend/react-base-main
+A API ficará disponível em:
+
+```
+https://localhost:5254/swagger
+```
+
+---
+
+## Clonar o Front-end
+
+```bash
+git clone https://github.com/SEU_USUARIO/frontend.git
+cd frontend
+npm install
+npm run dev
+```
+
+ou, se o projeto usa Create React App:
+
+```bash
 npm install
 npm start
+```
 
-# GIT (ATUALIZAR PROJETO)
+---
+
+## Enviar alterações para o GitHub
+
+```bash
 git add .
-git commit -m "update"
+git commit -m "Descrição da alteração"
 git push
+```
+
+---
+
+## Baixar alterações do GitHub
+
+```bash
+git pull
+```
