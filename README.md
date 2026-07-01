@@ -1,40 +1,19 @@
-# 📚 Primeira API - ASP.NET Core
-
-## Clonar o projeto
-
-```bash
+# CLONAR PROJETO
 git clone https://github.com/Gabriellemmo/meu-projeto-api.git
 cd meu-projeto-api
-```
 
-## Executar
-
-```bash
+# BACKEND (.NET)
+cd meu-projetobackend/dotnet-main
 dotnet restore
+dotnet ef database update
 dotnet run
-```
 
-Acesse:
+# FRONTEND (React)
+cd meu-projetofrontend/react-base-main
+npm install
+npm start
 
-```
-https://localhost:5254/swagger
-```
-
-## Git (Primeiro envio)
-
-```bash
-git init
-git remote add origin https://github.com/Gabriellemmo/meu-projeto-api.git
+# GIT (ATUALIZAR PROJETO)
 git add .
-git commit -m "Primeiro commit"
-git branch -M main
-git push -u origin main
-```
-
-## Atualizar o repositório
-
-```bash
-git add .
-git commit -m "Atualização"
+git commit -m "update"
 git push
-```
